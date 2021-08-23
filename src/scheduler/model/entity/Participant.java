@@ -19,7 +19,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity
+@Entity(name="participant")
 @SequenceGenerator(name="participant_idx_seq", sequenceName="participant_idx_seq", initialValue=1)
 public class Participant {
 	@Id
@@ -32,6 +32,6 @@ public class Participant {
 	private Scheduler schedulerIdx;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="user_idx")
-	private User userIdx;
+	@JoinColumn(name="member_idx")
+	private Member memberIdx;
 }

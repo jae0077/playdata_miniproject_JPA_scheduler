@@ -21,11 +21,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity
-@SequenceGenerator(name="scheduler_idx_seq", sequenceName="user_idx_seq", initialValue=1)
+@Entity(name="scheduler")
+@SequenceGenerator(name="scheduler_idx_seq", sequenceName="scheduler_idx_seq", initialValue=1)
 public class Scheduler {
 	@Id
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="user_idx_seq")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="scheduler_idx_seq")
 	private int idx;
 	
 	@Column(name="start_date", nullable=false)
@@ -50,7 +50,6 @@ public class Scheduler {
 	private Date createdDate;
 	
 	@OneToMany(mappedBy="schedulerIdx")
-	private List<Participant>변수명;
-	
+	private List<Participant> participants;
 	
 }
