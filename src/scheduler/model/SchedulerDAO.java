@@ -7,6 +7,8 @@ import java.util.Date;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
+import org.junit.jupiter.api.Test;
+
 import scheduler.model.dto.SchedulerDTO;
 import scheduler.model.entity.Scheduler;
 import util.PublicCommon;
@@ -131,11 +133,26 @@ public class SchedulerDAO {
 	// 스케줄 삭제
 	public Boolean deleteScheduler(int idx, String author) {
 		boolean result = false;
-				
+		EntityManager em = PublicCommon.getEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		
+		tx.begin();
+		try {
+			em.createNamedQuery("Scheduler.deleteByschedule").setParameter("idx", idx).setParameter("author", author).executeUpdate();
+			
+			tx.commit();
+			result = true;
+		} catch (Exception e) {
+			tx.rollback();
+			e.printStackTrace();
+		} finally {
+			em.close();
+			em = null;
+		}
 		return result;
 	}
 	
-//	@Test
+	@Test
 	public void m1() throws ParseException {
 		
 		String startDate = "2013-04-08 10:10:00";
@@ -143,9 +160,11 @@ public class SchedulerDAO {
 
 		SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		
-		setSchedule(transFormat.parse(startDate), transFormat.parse(endDate),"test2", "test", "test", "info");
-		
-		
+//		setSchedule(transFormat.parse(startDate), transFormat.parse(endDate),"test2", "test", "test", "test3");
+//		setSchedule(transFormat.parse(startDate), transFormat.parse(endDate),"test2", "test", "test", "test2");
+//		setSchedule(transFormat.parse(startDate), transFormat.parse(endDate),"test2", "test", "test", "test");
+		boolean test = deleteScheduler(5, "test");
+		System.out.println(test);
 //		Date to = transFormat.parse(startDate);
 //		System.out.println(to);
 

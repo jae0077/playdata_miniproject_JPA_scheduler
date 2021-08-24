@@ -75,9 +75,9 @@ public class SchedulerController {
 	
 	// 스케줄 수정
 	public void updateScheduler(int idx, String startDate, String endDate, String category, String title, String info, String author) {
-		
 		Date sDate;
 		Date eDate;
+		
 		try {
 			sDate = new SimpleDateFormat("dd/MM/yyyy").parse(startDate);
 			eDate = new SimpleDateFormat("dd/MM/yyyy").parse(endDate);
@@ -91,6 +91,14 @@ public class SchedulerController {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		
+	}
+	
+	// 스케줄 삭제
+	public void deleteScheduler(int idx, String author) {
+		if(schedulerDAO.deleteScheduler(idx, author)) {
+			EndView.successView("삭제 성공");
+		} else {
+			EndView.failView("수정 실패");
+		}
 	}
 }

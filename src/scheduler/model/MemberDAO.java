@@ -47,7 +47,6 @@ public class MemberDAO {
 		Member member = null;
 		try {
 			member = (Member)em.createNamedQuery("Member.findByLogin").setParameter("id", id).setParameter("pw", pw).getSingleResult();
-			System.out.println(member);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

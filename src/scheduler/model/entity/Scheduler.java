@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 
@@ -23,6 +24,7 @@ import lombok.Setter;
 @Setter
 @Entity(name="scheduler")
 @SequenceGenerator(name="scheduler_idx_seq", sequenceName="scheduler_idx_seq", initialValue=1, allocationSize=1)
+@NamedQuery(query="delete from scheduler s where s.idx=:idx and s.author=:author",name="Scheduler.deleteByschedule")
 public class Scheduler {
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="scheduler_idx_seq")
