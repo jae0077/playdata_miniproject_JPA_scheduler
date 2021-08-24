@@ -5,6 +5,7 @@ import javax.persistence.EntityTransaction;
 
 import org.junit.jupiter.api.Test;
 
+import scheduler.model.dto.MemberDTO;
 import scheduler.model.entity.Member;
 import util.PublicCommon;
 
@@ -15,7 +16,7 @@ public class MemberDAO {
 		return instance;
 	}
 
-	public boolean memberRegister(String id, String pw, String name, String phone) {
+	public boolean memberRegister(MemberDTO user) {
 		EntityManager em = PublicCommon.getEntityManager();	
 		EntityTransaction tx = em.getTransaction();
 		
@@ -23,10 +24,10 @@ public class MemberDAO {
 		boolean result = false;
 		try {
 			Member member = new Member();
-			member.setId(id);
-			member.setPw(pw);
-			member.setName(name);
-			member.setPhone(phone);
+			member.setId(user.getId());
+			member.setPw(user.getPw());
+			member.setName(user.getName());
+			member.setPhone(user.getPhone());
 			
 			em.persist(member);
 			tx.commit();
@@ -62,7 +63,9 @@ public class MemberDAO {
 	public void test() {
 		
 		System.out.println("--- 단위테스트 start ---");
-		boolean register = memberRegister("hello", "hello", "차재훈", "01012345678");
+
+		boolean register = memberRegister(new MemberDTO("hello", "hello", "hello", "01012345678"));
+
 		System.out.println(register);
 //		Member login = login("test", "testpw");
 		
