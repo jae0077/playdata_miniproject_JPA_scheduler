@@ -7,8 +7,7 @@ import java.util.Date;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
-import org.junit.jupiter.api.Test;
-
+import scheduler.model.dto.SchedulerDTO;
 import scheduler.model.entity.Scheduler;
 import util.PublicCommon;
 
@@ -84,6 +83,56 @@ public class SchedulerDAO {
 			em = null;
 		}
 		return schedule;
+	}
+	
+	// 스케줄 수정
+	public Boolean updateScheduler(int idx, SchedulerDTO schedulerDTO) {
+		
+		boolean result = false;
+		EntityManager em = PublicCommon.getEntityManager();
+		EntityTransaction tx = em.getTransaction();
+				
+		tx.begin();
+		
+		try {
+			Scheduler schedule = em.find(Scheduler.class, idx);
+			
+			if (schedulerDTO.getAuthor().equals(schedule.getAuthor())) {
+				if (schedulerDTO.getStartDate()!= null) {
+					schedule.setStartDate(schedulerDTO.getStartDate());				
+				}
+				
+				if (schedulerDTO.getEndDate() != null) {
+					schedule.setEndDate(schedulerDTO.getEndDate());
+				}
+				
+				if (schedulerDTO.getCategory()!= null) {
+					schedule.setCategory(schedulerDTO.getCategory());				
+				}
+				if (schedulerDTO.getTitle()!= null) {
+					schedule.setTitle(schedulerDTO.getTitle());
+				}
+				if (schedulerDTO.getInfo()!= null) {
+					schedule.setInfo(schedulerDTO.getInfo());	
+				}
+				tx.commit();
+				result = true;
+			}
+		} catch (Exception e) {
+			tx.rollback();
+			e.printStackTrace();
+		} finally {
+			em.close();
+			em = null;
+		}
+		return result;
+	}
+		
+	// 스케줄 삭제
+	public Boolean deleteScheduler(int idx, String author) {
+		boolean result = false;
+				
+		return result;
 	}
 	
 //	@Test

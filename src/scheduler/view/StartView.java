@@ -8,12 +8,6 @@ public class StartView {
 		StartPage sp = StartPage.getInstance();
 		
 		sp.start();
-		
-//		if(sc != null) {
-//		user = sc.login(id, pw);
-//		loggedIn = true;
-//		LoggedInPage();
-//	}
-		
+
 	}
 }
