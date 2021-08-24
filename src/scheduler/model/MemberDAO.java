@@ -42,14 +42,12 @@ public class MemberDAO {
 		return result;
 	} 
 	
-	public boolean login(String id, String pw) {
+	public Member login(String id, String pw) {
 		EntityManager em = PublicCommon.getEntityManager();	
-		
-		boolean result = false;
+		Member member = null;
 		try {
-			Member member = (Member)em.createNamedQuery("Member.findByLogin").setParameter("id", id).setParameter("pw", pw).getSingleResult();
+			member = (Member)em.createNamedQuery("Member.findByLogin").setParameter("id", id).setParameter("pw", pw).getSingleResult();
 			System.out.println(member);
-			result = true;
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -57,7 +55,7 @@ public class MemberDAO {
 			em = null;
 		}
 		
-		return result;
+		return member;
 	}
 	
 	@Test
@@ -67,7 +65,7 @@ public class MemberDAO {
 		System.out.println("--- 단위테스트 start ---");
 //		boolean register = memberRegister("test", "testpw", "test", "01012345678");
 //		System.out.println(register);
-		boolean login = login("test", "testpw");
+		Member login = login("test", "testpw");
 		
 		System.out.println(login);
 		System.out.println("--- 단위테스트 end ---");
