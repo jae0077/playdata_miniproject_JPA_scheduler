@@ -5,6 +5,7 @@ import java.util.Date;
 import scheduler.model.MemberDAO;
 import scheduler.model.ParticipantDAO;
 import scheduler.model.SchedulerDAO;
+import scheduler.model.StartPage;
 import scheduler.model.entity.Member;
 import scheduler.model.entity.Scheduler;
 import scheduler.view.EndView;
@@ -13,6 +14,7 @@ public class SchedulerController {
 	private static SchedulerController instance = new SchedulerController();
 	private SchedulerController() {}
 	public static SchedulerController getInstance() {
+		System.out.println("----- SchedulerController ");
 		return instance;
 	}
 	
@@ -22,13 +24,13 @@ public class SchedulerController {
 	ParticipantDAO participantDAO = ParticipantDAO.getInstance();
 	
 	// 회원가입
-	public void register(String id, String pw, String name, String phone) {
-		memberDAO.memberRegister(id, pw, name, phone);
+	public boolean register(String id, String pw, String name, String phone) {
+		return memberDAO.memberRegister(id, pw, name, phone);
 	}
 	
 	// 로그인
-	public void login(String id, String pw) {
-		memberDAO.login(id, pw);		
+	public Member login(String id, String pw) {
+		return memberDAO.login(id, pw);		
 	}
 	
 	// 스케출 작성 (기간)
@@ -51,5 +53,4 @@ public class SchedulerController {
 			EndView.failView("참여자 추가 실패 : 없는 멤버입니다");
 		}
 	}
-	
 }

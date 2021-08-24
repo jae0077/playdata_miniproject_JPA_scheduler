@@ -1,15 +1,19 @@
 package scheduler.view;
 
-import scheduler.controller.SchedulerController;
+import scheduler.model.StartPage;
 
 public class StartView {
 	public static void main (String[] args) {
 		
-		SchedulerController sc = SchedulerController.getInstance();
+		StartPage sp = StartPage.getInstance();
 		
+		sp.start();
 		
-		// 회원가입
-//		sc.register();
+//		if(sc != null) {
+//		user = sc.login(id, pw);
+//		loggedIn = true;
+//		LoggedInPage();
+//	}
 		
 	}
 }

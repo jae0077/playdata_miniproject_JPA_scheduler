@@ -86,7 +86,7 @@ public class SchedulerDAO {
 		return schedule;
 	}
 	
-	@Test
+//	@Test
 	public void m1() throws ParseException {
 		
 		String startDate = "2013-04-08 10:10:00";

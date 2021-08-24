@@ -58,16 +58,16 @@ public class MemberDAO {
 		return member;
 	}
 	
-	@Test
+//	@Test
 	// 단위테스트용
 	public void test() {
 		
 		System.out.println("--- 단위테스트 start ---");
-//		boolean register = memberRegister("test", "testpw", "test", "01012345678");
-//		System.out.println(register);
-		Member login = login("test", "testpw");
+		boolean register = memberRegister("hello", "hello", "hello", "01012345678");
+		System.out.println(register);
+//		Member login = login("test", "testpw");
 		
-		System.out.println(login);
+//		System.out.println(login);
 		System.out.println("--- 단위테스트 end ---");
 	}
 }
