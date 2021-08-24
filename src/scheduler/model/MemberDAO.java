@@ -15,7 +15,7 @@ public class MemberDAO {
 		return instance;
 	}
 
-	public static boolean memberRegister(String id, String pw, String name, String phone) {
+	public boolean memberRegister(String id, String pw, String name, String phone) {
 		EntityManager em = PublicCommon.getEntityManager();	
 		
 		EntityTransaction tx = em.getTransaction();

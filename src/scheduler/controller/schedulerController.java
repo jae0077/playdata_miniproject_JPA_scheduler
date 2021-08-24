@@ -12,13 +12,13 @@ public class SchedulerController {
 	}
 	
 	// static 강사님께 여쭤보기
-	static MemberDAO memberDAO = MemberDAO.getInstance();
+	MemberDAO memberDAO = MemberDAO.getInstance();
 	SchedulerDAO schedulerDAO = SchedulerDAO.getInstance();
 	ParticipantDAO participantDAO = ParticipantDAO.getInstance();
 	
-	public static void register(String id, String pw, String name, String phone) {
+	public void register(String id, String pw, String name, String phone) {
 		memberDAO.memberRegister(id, pw, name, phone);
-		
+
 	}
 	
 }
