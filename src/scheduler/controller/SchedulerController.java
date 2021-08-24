@@ -5,7 +5,6 @@ import java.util.Date;
 import scheduler.model.MemberDAO;
 import scheduler.model.ParticipantDAO;
 import scheduler.model.SchedulerDAO;
-import scheduler.model.StartPage;
 import scheduler.model.entity.Member;
 import scheduler.model.entity.Scheduler;
 import scheduler.view.EndView;

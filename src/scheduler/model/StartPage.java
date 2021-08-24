@@ -25,6 +25,8 @@ public class StartPage {
 	static String id = null;
 	static String pw = null;
 	
+	static int inputNum = 0;
+	
 	// 화면 시작
 	public void start() {
 		trigger = true;
@@ -35,7 +37,7 @@ public class StartPage {
 				System.out.println("======================Scheduler======================");
 				System.out.println("1, 로그인			2,회원가입			0,종료");
 				
-				int inputNum = Integer.parseInt(br.readLine());
+				inputNum = Integer.parseInt(br.readLine());
 				
 				if(inputNum == 1) {
 					logInPage();
@@ -125,7 +127,22 @@ public class StartPage {
 	}
 
 	private void LoggedInPage() {
-		System.out.println("loggedIn");
+		System.out.println("===================== 안녕하세요 "+ user.getName() + "님 =====================");
+		
+		while(loggedIn) {
+			System.out.println("1,일정 조회		2,일정 등록		3,로그아웃			4,종료");
+			try {
+				inputNum = Integer.parseInt(br.readLine());
+				
+				if(inputNum == 1) {
+					System.out.println("1,전체일정 조회		2,일정 타입 조회		3,날짜로 조회		4,참여자로 조회");
+					inputNum = Integer.parseInt(br.readLine());
+					
+				}
+			} catch (NumberFormatException | IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	
