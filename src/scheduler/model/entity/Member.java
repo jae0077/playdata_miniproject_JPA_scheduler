@@ -19,7 +19,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity(name="member")
-@SequenceGenerator(name="member_idx_seq", sequenceName="member_idx_seq", initialValue=1)
+@SequenceGenerator(name="member_idx_seq", sequenceName="member_idx_seq", initialValue=1, allocationSize=1)
 @NamedQuery(query="select m from member m where m.id=:id and m.pw=:pw",name="Member.findByLogin")
 public class Member {
 	@Id

@@ -1,11 +1,15 @@
 package scheduler.model;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
-import scheduler.model.entity.Member;
+import org.junit.jupiter.api.Test;
+
+import scheduler.model.entity.Scheduler;
 import util.PublicCommon;
 
 public class SchedulerDAO {
@@ -15,59 +19,86 @@ public class SchedulerDAO {
 		return instance;
 	}
 	
-
-//	public class Scheduler {
-//		@Id
-//		@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="scheduler_idx_seq")
-//		private int idx;
-//		
-//		@Column(name="start_date", nullable=false)
-//		private Date startDate;
-//		
-//		@Column(name="end_date", nullable=false)
-//		private Date endDate;
-//		
-//		@Column(name="category", nullable=false)
-//		private String category;
-//		
-//		@Column(name="title", nullable=false)
-//		private String title;
-//		
-//		@Column(name="info", nullable=true)
-//		private String info;
-//		
-//		@Column(name="author", nullable=false)
-//		private String author;
-//		
-//		@Column(name="created_date", nullable=false)
-//		private Date createdDate;
-//		
-//		@OneToMany(mappedBy="schedulerIdx")
-//		private List<Participant> participants;
-	
-	public boolean setSchedule(Date startDate, Date endDate, String category, String title, String info, String Author, Date createdDate) {
+	public static Scheduler setSchedule(Date startDate, Date endDate, String category, String title, String info, String author) {
+		
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
+				
+		Scheduler schedule = null;
 		
 		tx.begin();
 		
-		Scehduler schedule = new Scheduler();
-		
-		boolean result = false;
 		try {
-			Member member = (Member)em.createNamedQuery("Member.findByLogin").setParameter("id", id).setParameter("pw", pw).getSingleResult();
-			System.out.println(member);
-			result = true;
+			schedule = new Scheduler();
+			
+			schedule.setStartDate(startDate);
+			schedule.setEndDate(endDate);
+			schedule.setCategory(category);
+			schedule.setTitle(title);
+			schedule.setInfo(info);
+			schedule.setAuthor(author);
+			schedule.setCreatedDate(new Date());
+			
+			em.persist(schedule);
+			System.out.println("persist");
+			tx.commit();
+			System.out.println("commit");
 		} catch (Exception e) {
+			tx.rollback();
 			e.printStackTrace();
 		} finally {
 			em.close();
 			em = null;
 		}
-		
-		return result;
+		return schedule;
 	}
 	
+	// endDate, 설정 안할 시 startDate와 같은 날짜 set
+	public Scheduler setSchedule(Date startDate, String category, String title, String info, String author) {
+		
+		EntityManager em = PublicCommon.getEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		
+		Scheduler schedule = null;
+		
+		tx.begin();
+		
+		try {
+			schedule = new Scheduler();
+			
+			schedule.setStartDate(startDate);
+			schedule.setEndDate(startDate);
+			schedule.setCategory(category);
+			schedule.setTitle(title);
+			schedule.setInfo(info);
+			schedule.setAuthor(author);
+			schedule.setCreatedDate(new Date());
+			
+			tx.commit();
+						
+		} catch (Exception e) {
+			tx.rollback();
+			e.printStackTrace();
+		} finally {
+			em.close();
+			em = null;
+		}
+		return schedule;
+	}
 	
-	
+	@Test
+	public void m1() throws ParseException {
+		
+		String startDate = "2013-04-08 10:10:00";
+		String endDate = "2013-04-08 10:10:00";
+
+		SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		
+		setSchedule(transFormat.parse(startDate), transFormat.parse(endDate),"test2", "test", "test", "info");
+		
+		
+//		Date to = transFormat.parse(startDate);
+//		System.out.println(to);
+
+	}	
 }

@@ -22,7 +22,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity(name="scheduler")
-@SequenceGenerator(name="scheduler_idx_seq", sequenceName="scheduler_idx_seq", initialValue=1)
+@SequenceGenerator(name="scheduler_idx_seq", sequenceName="scheduler_idx_seq", initialValue=1, allocationSize=1)
 public class Scheduler {
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="scheduler_idx_seq")
@@ -51,5 +51,11 @@ public class Scheduler {
 	
 	@OneToMany(mappedBy="schedulerIdx")
 	private List<Participant> participants;
-	
+
+	@Override
+	public String toString() {
+		return "Scheduler [idx=" + idx + ", startDate=" + startDate + ", endDate=" + endDate + ", category=" + category
+				+ ", title=" + title + ", info=" + info + ", author=" + author + ", createdDate=" + createdDate
+				+ ", participants=" + participants + "]";
+	}
 }

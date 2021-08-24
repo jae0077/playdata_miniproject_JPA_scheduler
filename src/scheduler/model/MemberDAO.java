@@ -63,7 +63,7 @@ public class MemberDAO {
 	public void test() {
 		
 		System.out.println("--- 단위테스트 start ---");
-//		boolean register = memberRegister("test", "testpw", "test", "01012345678");
+		boolean register = memberRegister("test", "testpw", "test", "01012345678");
 //		System.out.println(register);
 		Member login = login("test", "testpw");
 		
