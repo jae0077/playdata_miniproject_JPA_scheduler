@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 
@@ -19,6 +20,7 @@ import lombok.Setter;
 @Setter
 @Entity(name="member")
 @SequenceGenerator(name="member_idx_seq", sequenceName="member_idx_seq", initialValue=1)
+@NamedQuery(query="select m from member m where m.id=:id and m.pw=:pw",name="Member.findByLogin")
 public class Member {
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="member_idx_seq")
@@ -38,4 +40,10 @@ public class Member {
 	
 	@OneToMany(mappedBy="memberIdx")
 	private List<Participant> participants;
+
+	@Override
+	public String toString() {
+		return "Member [idx=" + idx + ", id=" + id + ", pw=" + pw + ", name=" + name + ", phone=" + phone + ", participants=" + participants + "]";
+	}
+	
 }

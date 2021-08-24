@@ -18,7 +18,10 @@ public class SchedulerController {
 	
 	public void register(String id, String pw, String name, String phone) {
 		memberDAO.memberRegister(id, pw, name, phone);
-
+		
+	}
+	public void login(String id, String pw) {
+		memberDAO.login(id, pw);		
 	}
 	
 }

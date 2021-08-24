@@ -9,5 +9,6 @@ public class StartView {
 		
 		// 회원가입
 //		sc.register();
+		
 	}
 }

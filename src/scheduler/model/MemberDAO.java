@@ -29,11 +29,8 @@ public class MemberDAO {
 			member.setName(name);
 			member.setPhone(phone);
 			
-			System.out.println(1);
 			em.persist(member);
-			System.out.println(2);
 			tx.commit();
-			System.out.println(3);
 			result = true;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -43,13 +40,36 @@ public class MemberDAO {
 			em = null;
 		}
 		return result;
+	} 
+	
+	public boolean login(String id, String pw) {
+		EntityManager em = PublicCommon.getEntityManager();	
+		
+		boolean result = false;
+		try {
+			Member member = (Member)em.createNamedQuery("Member.findByLogin").setParameter("id", id).setParameter("pw", pw).getSingleResult();
+			System.out.println(member);
+			result = true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			em.close();
+			em = null;
+		}
+		
+		return result;
 	}
 	
 	@Test
 	// 단위테스트용
 	public void test() {
-		boolean test = memberRegister("test", "testpw", "test", "01012345678");
 		
-		System.out.println(test);
+		System.out.println("--- 단위테스트 start ---");
+//		boolean register = memberRegister("test", "testpw", "test", "01012345678");
+//		System.out.println(register);
+		boolean login = login("test", "testpw");
+		
+		System.out.println(login);
+		System.out.println("--- 단위테스트 end ---");
 	}
 }
