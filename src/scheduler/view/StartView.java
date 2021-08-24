@@ -9,11 +9,5 @@ public class StartView {
 		
 		sp.start();
 		
-//		if(sc != null) {
-//		user = sc.login(id, pw);
-//		loggedIn = true;
-//		LoggedInPage();
-//	}
-		
 	}
 }
