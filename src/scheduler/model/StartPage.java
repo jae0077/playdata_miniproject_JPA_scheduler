@@ -186,19 +186,21 @@ public class StartPage {
 	// 1, 일정조회 페이지
 	private void schedulerSearchPage() {
 		System.out.println("===================== 조회방법을 고르세요 =====================");
-		System.out.println("1,전체일정 조회		2,카테고리별 조회		3,날짜 조회		4,참여자 조회		0,뒤로가기");
+		System.out.println("1,전체일정 조회		2,카테고리별 조회		3,날짜 조회		5,일정수정			0,뒤로가기");
 		
 		try {
 			inputNum = Integer.parseInt(br.readLine());
 			
 			if(inputNum == 1) {
-//				전체일정조회
+//				전체일정조회 (조회 후 참여차 추가 여부)
 			} else if(inputNum == 2) {
 //				카테고리별 조회
 			} else if(inputNum == 3) {
 //				날짜 조회
 			} else if(inputNum == 4) {
-//				참여자 조회
+//				user 가 참여자인 일정 조회
+			} else if(inputNum == 5) {
+				updateSchedule();
 			} else if(inputNum == 0) {
 				loggedInPage();
 			}
@@ -209,6 +211,46 @@ public class StartPage {
 		
 	}
 	
+	// 일정 수정
+	private void updateSchedule() {
+		System.out.println("===================== 수정할 일정 을고르세요 =====================");
+//		sc.showScheduleAll();
+		try {
+			//idx
+			int idx = Integer.parseInt(br.readLine());
+			
+			System.out.println("===================== 수정할 정보를 고르세요 =====================");
+			System.out.println("1,날짜		2,카테고리			3,제목		5,설명		6,참여자		0,뒤로가기");
+			
+			inputNum = Integer.parseInt(br.readLine());
+			
+			if(inputNum == 1) { 		// 날짜 수정
+				
+			} else if(inputNum == 2) {	// 카테고리 수정
+
+			} else if(inputNum == 3) {	// 제목 수정
+
+			} else if(inputNum == 4) {	// 설명
+
+			} else if(inputNum == 5) {	// 설명
+
+			} else if(inputNum == 6) {	// 참여자 수정
+				
+			} else if(inputNum == 0) {	// 뒤로가기
+				loggedInPage();
+			}
+			
+			
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+	}
 	
 	// 참여자 추가 메소드
 	private void addParticipant(Scheduler schedule) {

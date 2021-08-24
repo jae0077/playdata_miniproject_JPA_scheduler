@@ -8,6 +8,6 @@ public class StartView {
 		StartPage sp = StartPage.getInstance();
 		
 		sp.start();
-
+		
 	}
 }
