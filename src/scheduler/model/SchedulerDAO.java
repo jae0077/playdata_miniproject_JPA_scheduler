@@ -19,7 +19,7 @@ public class SchedulerDAO {
 		return instance;
 	}
 	
-	public static Scheduler setSchedule(Date startDate, Date endDate, String category, String title, String info, String author) {
+	public Scheduler setSchedule(Date startDate, Date endDate, String category, String title, String info, String author) {
 		
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();

@@ -1,5 +1,7 @@
 package scheduler.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import scheduler.model.MemberDAO;
@@ -33,19 +35,35 @@ public class SchedulerController {
 	}
 	
 	// 스케출 작성 (기간)
-	public Scheduler setSchedule(Date startDate, Date endDate, String category, String title, String info, String author) {
-		Scheduler schedule = schedulerDAO.setSchedule(startDate, category, title, info, author);
+	public Scheduler setSchedule(String startDate, String endDate, String category, String title, String info, String author) {
+		
+		Scheduler schedule = null;
+		
+		Date sDate;
+		Date eDate;
+		try {
+			sDate = new SimpleDateFormat("dd/MM/yyyy").parse(startDate);
+			eDate = new SimpleDateFormat("dd/MM/yyyy").parse(endDate);
+			
+			schedule = schedulerDAO.setSchedule(sDate, eDate, category, title, info, author);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}   
 		return schedule;
 	}
 	
 	// 스케출 작성 (단일)
 	public Scheduler setSchedule(Date startDate, String category, String title, String info, String author) {
+		
 		Scheduler schedule = schedulerDAO.setSchedule(startDate, category, title, info, author);
 		return schedule;
 	}
 	
 	// 참여자 설정
-	public void setParticipant(Scheduler schedule, Member member) {
+	public void setParticipant(Scheduler schedule, String id) {
+		
+		Member member = memberDAO.searchById(id);
+		
 		if(participantDAO.setParticipant(schedule, member)) {
 			EndView.successView("참여자를 추가 성공");
 		} else {

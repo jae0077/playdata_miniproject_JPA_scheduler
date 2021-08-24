@@ -17,7 +17,6 @@ public class MemberDAO {
 
 	public boolean memberRegister(String id, String pw, String name, String phone) {
 		EntityManager em = PublicCommon.getEntityManager();	
-		
 		EntityTransaction tx = em.getTransaction();
 		
 		tx.begin();
@@ -63,11 +62,48 @@ public class MemberDAO {
 	public void test() {
 		
 		System.out.println("--- 단위테스트 start ---");
-		boolean register = memberRegister("hello", "hello", "hello", "01012345678");
+		boolean register = memberRegister("hello", "hello", "차재훈", "01012345678");
 		System.out.println(register);
 //		Member login = login("test", "testpw");
 		
 //		System.out.println(login);
 		System.out.println("--- 단위테스트 end ---");
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	public Member searchById(String id) {
+		EntityManager em = PublicCommon.getEntityManager();
+		
+		Member member = null;
+		
+		try {
+			member = new Member();
+			member = (Member)em.createNamedQuery("Member.findById").setParameter("id", id).getSingleResult();
+			System.out.println(member);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			em.close();
+			em = null;
+		}
+		
+		return member;
 	}
 }
