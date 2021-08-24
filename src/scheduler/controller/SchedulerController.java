@@ -76,10 +76,20 @@ public class SchedulerController {
 	// 스케줄 수정
 	public void updateScheduler(int idx, String startDate, String endDate, String category, String title, String info, String author) {
 		
-		if(SchedulerDAO.updateScheduler(idx, new SchedulerDTO(startDate, endDate, category, title, info, author)) {
-			EndView.successView("수정 완료");
-		} else {
-			EndView.failView("수정 실패");
+		Date sDate;
+		Date eDate;
+		try {
+			sDate = new SimpleDateFormat("dd/MM/yyyy").parse(startDate);
+			eDate = new SimpleDateFormat("dd/MM/yyyy").parse(endDate);
+			
+			if(schedulerDAO.updateScheduler(idx, new SchedulerDTO(sDate, eDate, category, title, info, author))) {
+				EndView.successView("수정 완료");
+			} else {
+				EndView.failView("수정 실패");
+			}
+			
+		} catch (ParseException e) {
+			e.printStackTrace();
 		}
 		
 	}
