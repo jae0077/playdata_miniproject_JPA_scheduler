@@ -46,6 +46,7 @@ public class MemberDAO {
 	}
 	
 	@Test
+	// 단위테스트용
 	public void test() {
 		boolean test = memberRegister("test", "testpw", "test", "01012345678");
 		
