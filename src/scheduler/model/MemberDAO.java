@@ -3,8 +3,6 @@ package scheduler.model;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
-import org.junit.jupiter.api.Test;
-
 import scheduler.model.dto.MemberDTO;
 import scheduler.model.entity.Member;
 import util.PublicCommon;

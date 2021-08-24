@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 
 import lombok.AllArgsConstructor;
@@ -21,6 +22,7 @@ import lombok.Setter;
 @Setter
 @Entity(name="participant")
 @SequenceGenerator(name="participant_idx_seq", sequenceName="participant_idx_seq", initialValue=1, allocationSize=1)
+@NamedQuery(query="delete from participant p where p.schedulerIdx =:sId and p.memberIdx =:mId",name="Participant.deleteParticipant")
 public class Participant {
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="participant_idx_seq")

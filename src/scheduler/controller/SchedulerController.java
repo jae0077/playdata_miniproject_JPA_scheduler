@@ -73,6 +73,18 @@ public class SchedulerController {
 		}
 	}
 	
+	// 참여자 삭체
+	public void deleteParticipant(Scheduler schedule, String id) {
+		
+		Member member = memberDAO.searchById(id);
+		
+		if(participantDAO.deleteParticipant(schedule, member)) {
+			EndView.successView("참여자를 추가 성공");
+		} else {
+			EndView.failView("참여자 추가 실패 : 없는 멤버입니다");
+		}
+	}
+	
 	// 스케줄 수정
 	public void updateScheduler(int idx, String startDate, String endDate, String category, String title, String info, String author) {
 		
