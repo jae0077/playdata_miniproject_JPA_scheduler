@@ -7,6 +7,7 @@ public class StartView {
 		
 		SchedulerController sc = SchedulerController.getInstance();
 		
+		
 		// 회원가입
 //		sc.register();
 		

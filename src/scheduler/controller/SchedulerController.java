@@ -7,6 +7,7 @@ import scheduler.model.ParticipantDAO;
 import scheduler.model.SchedulerDAO;
 import scheduler.model.entity.Member;
 import scheduler.model.entity.Scheduler;
+import scheduler.view.EndView;
 
 public class SchedulerController {
 	private static SchedulerController instance = new SchedulerController();
@@ -44,7 +45,11 @@ public class SchedulerController {
 	
 	// 참여자 설정
 	public void setParticipant(Scheduler schedule, Member member) {
-		participantDAO.setParticipant(schedule, member);
+		if(participantDAO.setParticipant(schedule, member)) {
+			EndView.successView("참여자를 추가 성공");
+		} else {
+			EndView.failView("참여자 추가 실패 : 없는 멤버입니다");
+		}
 	}
 	
 }

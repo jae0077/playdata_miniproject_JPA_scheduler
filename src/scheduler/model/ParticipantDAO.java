@@ -1,8 +1,6 @@
 package scheduler.model;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -22,10 +20,12 @@ public class ParticipantDAO {
 	}
 	
 	// 참여자 추가
-	public void setParticipant(Scheduler schedule, Member member) {
+	public boolean setParticipant(Scheduler schedule, Member member) {
 		
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
+		
+		boolean result = false;
 		
 		Participant participant = null;
 		
@@ -39,6 +39,8 @@ public class ParticipantDAO {
 			
 			em.persist(participant);
 			tx.commit();
+			
+			result = true;
 						
 		} catch (Exception e) {
 			tx.rollback();
@@ -47,6 +49,7 @@ public class ParticipantDAO {
 			em.close();
 			em = null;
 		}
+		return result;
 	}
 	
 	@Test
