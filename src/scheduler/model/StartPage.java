@@ -6,8 +6,10 @@ import java.io.InputStreamReader;
 
 import scheduler.controller.SchedulerController;
 import scheduler.model.entity.Member;
+import scheduler.model.entity.Scheduler;
 
 public class StartPage {
+	
 	private static StartPage instance = new StartPage();
 	private StartPage() {}
 	public static StartPage getInstance() {
@@ -26,15 +28,17 @@ public class StartPage {
 	static String pw = null;
 	
 	static int inputNum = 0;
+	static String input = "";
 	
 	// 화면 시작
 	public void start() {
+		
 		trigger = true;
 			
 		try {
 			while(trigger) {
 				
-				System.out.println("======================Scheduler======================");
+				System.out.println("====================== Scheduler ======================");
 				System.out.println("1, 로그인			2,회원가입			0,종료");
 				
 				inputNum = Integer.parseInt(br.readLine());
@@ -65,7 +69,7 @@ public class StartPage {
 		}	
 	}
 	
-	
+	// 회원가입 페이지
 	private void registerPage() {
 		
 		String newId = null;
@@ -75,6 +79,7 @@ public class StartPage {
 		
 		System.out.println("===================== 회원가입 =====================");
 		System.out.print("사용하실 아이디를 입력해주세요 : ");
+		
 		try {
 			newId = br.readLine();
 			
@@ -104,7 +109,10 @@ public class StartPage {
 		}
 		
 	}
+	
+	// 로그인 페이지
 	private void logInPage() {
+		
 		System.out.println("===================== 로그인 =====================");
 		
 		try {
@@ -123,21 +131,51 @@ public class StartPage {
 		
 		user = sc.login(id, pw);
 		loggedIn = true;
-		LoggedInPage();
+		loggedInPage();
 	}
-
-	private void LoggedInPage() {
+	
+	
+	// 로그인 후 페이지
+	private void loggedInPage() {
+		
 		System.out.println("===================== 안녕하세요 "+ user.getName() + "님 =====================");
 		
 		while(loggedIn) {
-			System.out.println("1,일정 조회		2,일정 등록		3,로그아웃			4,종료");
+			System.out.println("1,일정 조회		2,일정 등록		3,로그아웃			0,종료");
 			try {
 				inputNum = Integer.parseInt(br.readLine());
 				
 				if(inputNum == 1) {
-					System.out.println("1,전체일정 조회		2,일정 타입 조회		3,날짜로 조회		4,참여자로 조회");
-					inputNum = Integer.parseInt(br.readLine());
+					schedulerSearchPage();
+				} else if(inputNum == 2) {
+					try {
+						System.out.print("일정 시작  ( YY / MM / DD ) : ");
+						String startDate = br.readLine();
+						System.out.print("일정 종료 ( YY / MM / DD ) : ");
+						String endDate = br.readLine();
+						System.out.print("일정 카태고리 : ");
+						String category = br.readLine();
+						System.out.print("제목 : ");
+						String title = br.readLine();
+						System.out.print("설명 : ");
+						String info = br.readLine();
+						
+						Scheduler schedule = sc.setSchedule(startDate, endDate, category, title, info, user.getName());
+						
+						addParticipant(schedule);
+	
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 					
+				} else if (inputNum == 3) {
+					loggedIn = false;
+					start();
+				} else if (inputNum == 0) {
+					System.out.println("종료합니다");
+					br.close();
+					loggedIn = false;
+					trigger = false;
 				}
 			} catch (NumberFormatException | IOException e) {
 				e.printStackTrace();
@@ -145,5 +183,57 @@ public class StartPage {
 		}
 	}
 	
+	// 1, 일정조회 페이지
+	private void schedulerSearchPage() {
+		System.out.println("===================== 조회방법을 고르세요 =====================");
+		System.out.println("1,전체일정 조회		2,카테고리별 조회		3,날짜 조회		4,참여자 조회		0,뒤로가기");
+		
+		try {
+			inputNum = Integer.parseInt(br.readLine());
+			
+			if(inputNum == 1) {
+//				전체일정조회
+			} else if(inputNum == 2) {
+//				카테고리별 조회
+			} else if(inputNum == 3) {
+//				날짜 조회
+			} else if(inputNum == 4) {
+//				참여자 조회
+			} else if(inputNum == 0) {
+				loggedInPage();
+			}
+			
+		} catch (NumberFormatException | IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
+	// 참여자 추가 메소드
+	private void addParticipant(Scheduler schedule) {
+		
+		System.out.println("참여자를 추가하겠습니까? (y/n)");
+		
+		try {
+			input = null;
+			input = br.readLine();
+			
+			if(input.equals("y")) {
+				input = null;
+				System.out.println("참여자를 추가하세요 (아이디)");
+				input = br.readLine();
+				
+				sc.setParticipant(schedule, input);
+				addParticipant(schedule);
+			} else if(input.equals("n")) {
+				loggedInPage();
+			}
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
 	
 }
