@@ -1,14 +1,11 @@
 package scheduler.model;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-import javax.persistence.NamedQuery;
 
 import org.junit.jupiter.api.Test;
 
@@ -178,22 +175,20 @@ public class SchedulerDAO {
 		return result;
 	}
   
-  @Test
 	//본인의 일정만(로그인)전체조회 
-	public static List getSchedulerAll(String author) {
+	public List<Scheduler> getSchedulerAll(String author) {
 		EntityManager em = PublicCommon.getEntityManager();
-		
-		List all = em.createNamedQuery("Scheduler.findByAll").setParameter("author", author).getResultList();
+		List<Scheduler> all = (List<Scheduler>)em.createNamedQuery("Scheduler.findByAll").setParameter("author", author).getResultList();
 		
 		em.close();
 		em = null;
 		
+		System.out.println("test");
 		return all;
 	}
 		
-	@Test
 	//특정일정조회 - 카테고리로 조회
-	public static Scheduler getSchedulerOne(String category, String author) {
+	public Scheduler getSchedulerOne(String category, String author) {
 		EntityManager em = PublicCommon.getEntityManager();
 		
 		Scheduler sc = (Scheduler)em.createNamedQuery("Scheduler.findByCategory").setParameter("category", category).setParameter("author", author).getSingleResult();
@@ -205,9 +200,8 @@ public class SchedulerDAO {
 
 	}
 	
-	//@Test
 	//특정일정조회 - 날짜로 조회
-	public static  Scheduler getSchedulerDate(String startDate, String author) {
+	public  Scheduler getSchedulerDate(String startDate, String author) {
 		
 		EntityManager em = PublicCommon.getEntityManager();
 
@@ -219,10 +213,8 @@ public class SchedulerDAO {
 		return sc;
 	}
 	
-	
-	@Test
 	//특정일정조회 - 일정 제목으로 조회
-	public static Scheduler getSchedulerTitle(String title, String author) {
+	public Scheduler getSchedulerTitle(String title, String author) {
 		
 		EntityManager em = PublicCommon.getEntityManager();
 		
@@ -234,14 +226,12 @@ public class SchedulerDAO {
 		return sc;
 	}
 	
-	
-	@Test
 	//특정일정조회 - 참여자로 조회
-	public static Scheduler getSchedulerParticipant(String id, String author) {
+	public Scheduler getSchedulerParticipant(String id, String author) {
 		
 		EntityManager em = PublicCommon.getEntityManager();
 		
-		Scheduler sc = (Scheduler)em.createNamedQuery("Scheduler.findByParticipant").setParameter("id", id).setParameter("author", author).getSingleResult();
+		Scheduler sc = (Scheduler)em.createNamedQuery("Participant.findByParticipant").setParameter("id", id).setParameter("author", author).getSingleResult();
 
 		em.close();
 		em = null;
@@ -252,17 +242,22 @@ public class SchedulerDAO {
 	@Test
 	public void m1() throws ParseException {
 		
-		String startDate = "2013-04-08 10:10:00";
-		String endDate = "2013-04-08 10:10:00";
+//		String startDate = "2013-04-08 10:10:00";
+//		String endDate = "2013-04-08 10:10:00";
 
-		SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+//		SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		
 //		setSchedule(transFormat.parse(startDate), transFormat.parse(endDate),"test2", "test", "test", "test3");
 //		setSchedule(transFormat.parse(startDate), transFormat.parse(endDate),"test2", "test", "test", "test2");
 //		setSchedule(transFormat.parse(startDate), transFormat.parse(endDate),"test2", "test", "test", "test");
-		boolean test = deleteScheduler(5, "test");
-		System.out.println(test);
+//		boolean test = deleteScheduler(5, "test");
+//		System.out.println(test);
 //		Date to = transFormat.parse(startDate);
 //		System.out.println(to);
+		System.out.println(getSchedulerAll("info"));
+//		System.out.println("-------------------category " + getSchedulerOne("외부미팅", "info"));
+//		System.out.println("-------------------date " + getSchedulerDate("2021/08/25", "test2"));
+//		System.out.println("-------------------getAll " + getSchedulerAll("info"));
+//		System.out.println("-------------------getAll " + getSchedulerAll("info"));
 	}
 }

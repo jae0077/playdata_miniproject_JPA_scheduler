@@ -21,8 +21,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity(name="participant")
-@SequenceGenerator(name="participant_idx_seq", sequenceName="participant_idx_seq", initialValue=1, allocationSize=1)
 @NamedQuery(query="delete from participant p where p.schedulerIdx =:sId and p.memberIdx =:mId",name="Participant.deleteParticipant")
+@NamedQuery(query="select p from participant p where p.memberIdx = (select m.idx from member m where m.id=:id)", name="Participant.findByParticipant")
+@SequenceGenerator(name="participant_idx_seq", sequenceName="participant_idx_seq", initialValue=1, allocationSize=1)
 public class Participant {
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="participant_idx_seq")
