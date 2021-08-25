@@ -12,6 +12,7 @@ import javax.persistence.NamedQuery;
 
 import org.junit.jupiter.api.Test;
 
+import scheduler.model.dto.SchedulerDTO;
 import scheduler.model.entity.Scheduler;
 import util.PublicCommon;
 
@@ -22,7 +23,7 @@ public class SchedulerDAO {
 		return instance;
 	}
 	
-	public static Scheduler setSchedule(Date startDate, Date endDate, String category, String title, String info, String author) {
+	public Scheduler setSchedule(Date startDate, Date endDate, String category, String title, String info, String author) {
 		
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
@@ -89,120 +90,95 @@ public class SchedulerDAO {
 		return schedule;
 	}
 	
-//	@Test
-	public void m1() throws ParseException {
+  // searchByIdx
+	public Scheduler searchByIdx(int idx) {
 		
-		String startDate = "2013-04-08 10:10:00";
-		String endDate = "2013-04-08 10:10:00";
-
-		SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		EntityManager em = PublicCommon.getEntityManager();
+		Scheduler schedule = null;
 		
-		setSchedule(transFormat.parse(startDate), transFormat.parse(endDate),"test2", "test", "test", "info");
+		try {
+			schedule = (Scheduler) em.createNamedQuery("Scheduler.searchByIdx").setParameter("idx", idx).getSingleResult();
+			System.out.println(schedule);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			em.close();
+			em = null;
+		}
 		
+		return schedule;
+	}
+  
+	// 스케줄 수정
+	public Boolean updateScheduler(int idx, SchedulerDTO schedulerDTO) {
 		
-//		Date to = transFormat.parse(startDate);
-//		System.out.println(to);
-
-	}	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+		boolean result = false;
+		EntityManager em = PublicCommon.getEntityManager();
+		EntityTransaction tx = em.getTransaction();
+				
+		tx.begin();
 		
-	@Test
+		try {
+			Scheduler schedule = em.find(Scheduler.class, idx);
+			
+			if (schedulerDTO.getAuthor().equals(schedule.getAuthor())) {
+				if (schedulerDTO.getStartDate()!= null) {
+					schedule.setStartDate(schedulerDTO.getStartDate());				
+				}
+				
+				if (schedulerDTO.getEndDate() != null) {
+					schedule.setEndDate(schedulerDTO.getEndDate());
+				}
+				
+				if (schedulerDTO.getCategory()!= null) {
+					schedule.setCategory(schedulerDTO.getCategory());				
+				}
+				if (schedulerDTO.getTitle()!= null) {
+					schedule.setTitle(schedulerDTO.getTitle());
+				}
+				if (schedulerDTO.getInfo()!= null) {
+					schedule.setInfo(schedulerDTO.getInfo());	
+				}
+				tx.commit();
+				result = true;
+			}
+		} catch (Exception e) {
+			tx.rollback();
+			e.printStackTrace();
+		} finally {
+			em.close();
+			em = null;
+		}
+		return result;
+	}
+		
+	// 스케줄 삭제
+	public Boolean deleteScheduler(int idx, String author) {
+		boolean result = false;
+		EntityManager em = PublicCommon.getEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		
+		tx.begin();
+		try {
+			int flag = em.createNamedQuery("Scheduler.deleteByschedule").setParameter("idx", idx).setParameter("author", author).executeUpdate();
+			
+			tx.commit();
+			
+			if(flag == 1) {
+				result = true;
+			}
+			
+		} catch (Exception e) {
+			tx.rollback();
+			e.printStackTrace();
+		} finally {
+			em.close();
+			em = null;
+		}
+		return result;
+	}
+  
+  @Test
 	//본인의 일정만(로그인)전체조회 
 	public static List getSchedulerAll(String author) {
 		EntityManager em = PublicCommon.getEntityManager();
@@ -273,5 +249,20 @@ public class SchedulerDAO {
 		return sc;
 	}
 	
-	
+	@Test
+	public void m1() throws ParseException {
+		
+		String startDate = "2013-04-08 10:10:00";
+		String endDate = "2013-04-08 10:10:00";
+
+		SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		
+//		setSchedule(transFormat.parse(startDate), transFormat.parse(endDate),"test2", "test", "test", "test3");
+//		setSchedule(transFormat.parse(startDate), transFormat.parse(endDate),"test2", "test", "test", "test2");
+//		setSchedule(transFormat.parse(startDate), transFormat.parse(endDate),"test2", "test", "test", "test");
+		boolean test = deleteScheduler(5, "test");
+		System.out.println(test);
+//		Date to = transFormat.parse(startDate);
+//		System.out.println(to);
+	}
 }

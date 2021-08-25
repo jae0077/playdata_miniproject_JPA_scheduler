@@ -52,6 +52,37 @@ public class ParticipantDAO {
 		return result;
 	}
 	
+	public boolean deleteParticipant(Scheduler schedule, Member member) {
+		
+		EntityManager em = PublicCommon.getEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		
+		Participant participant = null;
+		
+		boolean result = false;
+				
+		tx.begin();
+		
+		try {
+			participant = new Participant();
+			int flag = em.createNamedQuery("Participant.deleteParticipant").setParameter("sId", schedule).setParameter("mId", member).executeUpdate();
+			
+			tx.commit();
+			
+			if(flag == 1) {
+				result = true;
+			}
+						
+		} catch (Exception e) {
+			tx.rollback();
+			e.printStackTrace();
+		} finally {
+			em.close();
+			em = null;
+		}
+		return result;
+	}
+	
 	@Test
 	public void m1() throws ParseException {
 				
@@ -60,12 +91,13 @@ public class ParticipantDAO {
 		Member participant = null;
 		
 		Scheduler schedule = em.find(Scheduler.class, 2);
-		participant = em.find(Member.class, 1);
+		participant = em.find(Member.class, 2);
 		
 		System.out.println(schedule);
 		System.out.println(participant);
 		
-		
-		setParticipant(schedule, participant);
+//		setParticipant(schedule, participant);
+//		deleteParticipant(schedule, participant);
 	}
+	
 }
