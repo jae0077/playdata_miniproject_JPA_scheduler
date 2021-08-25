@@ -14,6 +14,7 @@ public class MemberDAO {
 		return instance;
 	}
 
+	// 회원가입
 	public boolean memberRegister(MemberDTO user) {
 		EntityManager em = PublicCommon.getEntityManager();	
 		EntityTransaction tx = em.getTransaction();
@@ -40,6 +41,7 @@ public class MemberDAO {
 		return result;
 	} 
 	
+	// 로그인
 	public Member login(String id, String pw) {
 		EntityManager em = PublicCommon.getEntityManager();	
 		Member member = null;
@@ -51,43 +53,11 @@ public class MemberDAO {
 			em.close();
 			em = null;
 		}
-		
 		return member;
 	}
 	
-//	@Test
-	// 단위테스트용
-	public void test() {
-		
-		System.out.println("--- 단위테스트 start ---");
-
-		boolean register = memberRegister(new MemberDTO("hello", "hello", "hello", "01012345678"));
-
-		System.out.println(register);
-//		Member login = login("test", "testpw");
-		
-//		System.out.println(login);
-		System.out.println("--- 단위테스트 end ---");
-	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	// 아이디 조회
 	public Member searchById(String id) {
 		EntityManager em = PublicCommon.getEntityManager();
 		
@@ -103,7 +73,6 @@ public class MemberDAO {
 			em.close();
 			em = null;
 		}
-		
 		return member;
 	}
 }

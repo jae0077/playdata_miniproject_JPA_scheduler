@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,9 +24,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @NamedQuery(query="select s from scheduler s where s.author=:author", name="Scheduler.findByAll")
-@NamedQuery(query="select s from scheduler s where s.category=:category", name="Scheduler.findByCategory")
-@NamedQuery(query="select s from scheduler s where s.title=:title", name="Scheduler.findByTitle")
-//@NamedQuery(query="select s from scheduler s where (s.startDate between to_date(:startDate) and to_date(:startDate) + 0.99999) and s.author:author", name="Scheduler.findByDate")
+@NamedQuery(query="select s from scheduler s where s.category=:category and s.author=:author", name="Scheduler.findByCategory")
+@NamedQuery(query="select s from scheduler s where s.title=:title and s.author=:author", name="Scheduler.findByTitle")
+@NamedQuery(query="select s from scheduler s where s.startDate = :startDate and s.author=:author", name="Scheduler.findByDate")
 @NamedQuery(query="delete from scheduler s where s.idx=:idx and s.author=:author",name="Scheduler.deleteByschedule")
 @NamedQuery(query="select s from scheduler s where s.idx=:idx",name="Scheduler.searchByIdx")
 @Entity(name="scheduler")
@@ -55,14 +56,11 @@ public class Scheduler {
 																
 	@Column(name="created_date", nullable=false)
 	private Date createdDate;
-	
-	@OneToMany(mappedBy="schedulerIdx")
-	private List<Participant> participants;
 
-	@Override
-	public String toString() {
-		return "Scheduler [idx=" + idx + ", startDate=" + startDate + ", endDate=" + endDate + ", category=" + category
-				+ ", title=" + title + ", info=" + info + ", author=" + author + ", createdDate=" + createdDate
-				+ ", participants=" + participants + "]";
+	@OneToMany(fetch=FetchType.EAGER,mappedBy="schedulerIdx")
+	private List<Participant> participants;
+	
+	public int getParticipantCount() {
+		return participants.size();
 	}
 }

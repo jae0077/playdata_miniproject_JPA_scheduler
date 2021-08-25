@@ -15,159 +15,159 @@ import scheduler.view.EndView;
 
 public class SchedulerController {
 	private static SchedulerController instance = new SchedulerController();
-	private SchedulerController() {}
+
+	private SchedulerController() {
+	}
+
 	public static SchedulerController getInstance() {
 		System.out.println("----- SchedulerController ");
 		return instance;
 	}
-	
+
 	MemberDAO memberDAO = MemberDAO.getInstance();
 	SchedulerDAO schedulerDAO = SchedulerDAO.getInstance();
 	ParticipantDAO participantDAO = ParticipantDAO.getInstance();
-	
+
 	// 회원가입
 	public boolean register(String id, String pw, String name, String phone) {
-		
+
 		return memberDAO.memberRegister(new MemberDTO(id, pw, name, phone));
 	}
-	
+
 	// 로그인
 	public Member login(String id, String pw) {
-		return memberDAO.login(id, pw);		
+		return memberDAO.login(id, pw);
 	}
-	
+
 	// 스케줄 작성 (기간)
 	public Scheduler setSchedule(String startDate, String endDate, String category, String title, String info, String author) {
-		
+
 		Scheduler schedule = null;
-		
+
 		Date sDate;
 		Date eDate;
 		try {
-			sDate = new SimpleDateFormat("dd/MM/yyyy").parse(startDate);
-			eDate = new SimpleDateFormat("dd/MM/yyyy").parse(endDate);
-			
+			sDate = new SimpleDateFormat("yyyy/MM/dd").parse(startDate);
+			eDate = new SimpleDateFormat("yyyy/MM/dd").parse(endDate);
+
 			schedule = schedulerDAO.setSchedule(sDate, eDate, category, title, info, author);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		return schedule;
 	}
-	
-	// 스케줄 작성 (단일)
-	public Scheduler setSchedule(Date startDate, String category, String title, String info, String author) {
-		
-		Scheduler schedule = schedulerDAO.setSchedule(startDate, category, title, info, author);
-		return schedule;
-	}
-	
+
 	// 참여자 설정
 	public void setParticipant(int idx, String id) {
-		
+
 		Member member = memberDAO.searchById(id);
 		Scheduler schedule = schedulerDAO.searchByIdx(idx);
-		
-		if(participantDAO.setParticipant(schedule, member)) {
+
+		if (participantDAO.setParticipant(schedule, member)) {
 			EndView.successView("참여자를 추가 성공");
 		} else {
 			EndView.failView("참여자 추가 실패 : 없는 멤버입니다");
 		}
 	}
-	
-	// 참여자 삭체
+
+	// 참여자 삭제
 	public void deleteParticipant(int idx, String id) {
-		
+
 		Member member = memberDAO.searchById(id);
 		Scheduler schedule = schedulerDAO.searchByIdx(idx);
-		
-		if(participantDAO.deleteParticipant(schedule, member)) {
+
+		if (participantDAO.deleteParticipant(schedule, member)) {
 			EndView.successView("참여자 삭제 성공");
 		} else {
 			EndView.failView("참여자 삭제 실패 : 참여자로 등록되지 않은 멤버입니다");
 		}
 	}
-	
+
 	// 스케줄 수정
 	public void updateScheduler(int idx, String startDate, String endDate, String category, String title, String info, String author) {
-		
+
 		Date sDate = null;
 		Date eDate = null;
-		
+
 		try {
-			if(startDate != null) {
-				sDate = new SimpleDateFormat("dd/MM/yyyy").parse(startDate);
+			if (startDate != null) {
+				sDate = new SimpleDateFormat("yyyy/MM/dd").parse(startDate);
 			}
-			if(endDate != null) {
-				eDate = new SimpleDateFormat("dd/MM/yyyy").parse(endDate);
+			if (endDate != null) {
+
+				eDate = new SimpleDateFormat("yyyy/MM/dd").parse(endDate);
 			}
-			
-			if(schedulerDAO.updateScheduler(idx, new SchedulerDTO(sDate, eDate, category, title, info, author))) {
+
+			if (schedulerDAO.updateScheduler(idx, new SchedulerDTO(sDate, eDate, category, title, info, author))) {
 				EndView.successView("수정 완료");
 			} else {
 				EndView.failView("수정 실패");
 			}
-			
+
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	// 스케줄 삭제
 	public void deleteScheduler(int idx, String author) {
-		if(schedulerDAO.deleteScheduler(idx, author)) {
+		if (schedulerDAO.deleteScheduler(idx, author)) {
 			EndView.successView("삭제 성공");
 		} else {
 			EndView.failView("수정 실패");
 		}
 	}
-  
-	  // 모든 일정 조회 
-	  public void getSchedulerAll(String author) {
-		  try {
-			  EndView.scheduleListAll(schedulerDAO.getSchedulerAll(author));
-		  } catch (Exception e) {
-		    e.printStackTrace();
-		    EndView.failView("에러 발생");
-		  }
-	  }
-		
-	// 특정 일정 조회	
-	public void getSchedulerOne(String category, String author) {
+
+	// 유저 작성 일정 조회 (전체)
+	public void getSchedulerAll(String author) {
 		try {
-			EndView.scheduleListOne(schedulerDAO.getSchedulerOne(category, author));
+			EndView.scheduleListAll(schedulerDAO.getSchedulerAll(author));
 		} catch (Exception e) {
 			e.printStackTrace();
 			EndView.failView("에러 발생");
 		}
 	}
-	
-	// 특정 날짜로 일정 조회
+
+	// 유저 작성 일정 조회 (카테고리)
+	public void getSchedulerCategory(String category, String author) {
+		try {
+			EndView.scheduleListAll(schedulerDAO.getSchedulerCategory(category, author));
+		} catch (Exception e) {
+			e.printStackTrace();
+			EndView.failView("에러 발생");
+		}
+	}
+
+	// 유저 작성 일정 조회 (일정)
 	public void getSchedulerDate(String startDate, String author) {
-		
+
+		Date sDate = null;
+
 		try {
-			EndView.scheduleListOne(schedulerDAO.getSchedulerDate(startDate, author));
+			sDate = new SimpleDateFormat("yyyy/MM/dd").parse(startDate);
+			EndView.scheduleListAll(schedulerDAO.getSchedulerDate(sDate, author));
 		} catch (Exception e) {
 			e.printStackTrace();
 			EndView.failView("에러 발생");
 		}
 	}
-		
-	// 일정 제목으로 조회
+
+	// 유저 작성 일정 조회 (제목)
 	public void getSchedulerTitle(String title, String author) {
-		
+
 		try {
-			EndView.scheduleListOne(schedulerDAO.getSchedulerTitle(title, author));
+			EndView.scheduleListAll(schedulerDAO.getSchedulerTitle(title, author));
 		} catch (Exception e) {
 			e.printStackTrace();
 			EndView.failView("에러 발생");
 		}
 	}
-	
-	// 특정 참여자로 일정 조회	
-	public void getSchedulerParticipant(String id, String author) {
-		
+
+	// 유저 참여 일정 조회
+	public void getSchedulerParticipant(String id) {
+
 		try {
-			EndView.scheduleListOne(schedulerDAO.getSchedulerParticipant(id, author));
+			EndView.scheduleListAll(schedulerDAO.getSchedulerParticipant(id));
 		} catch (Exception e) {
 			e.printStackTrace();
 			EndView.failView("에러 발생");

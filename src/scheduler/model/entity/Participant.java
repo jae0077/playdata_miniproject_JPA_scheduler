@@ -30,11 +30,11 @@ public class Participant {
 	@Column(name="participant_idx")
 	private int idx;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="scheduler_idx")
 	private Scheduler schedulerIdx;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="member_idx")
 	private Member memberIdx;
 }

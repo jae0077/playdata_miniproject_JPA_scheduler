@@ -170,6 +170,8 @@ public class StartPage {
 					
 				} else if (inputNum == 3) {
 					loggedIn = false;
+					id = null;
+					pw = null;
 					start();
 				} else if (inputNum == 0) {
 					System.out.println("종료합니다");
@@ -186,19 +188,21 @@ public class StartPage {
 	// 1, 일정조회 페이지
 	private void schedulerSearchPage() {
 		System.out.println("===================== 조회방법을 고르세요 =====================");
-		System.out.println("1,전체일정 조회		2,카테고리별 조회		3,날짜 조회		5,일정수정			0,뒤로가기");
+		System.out.println("1,전체일정 조회		2,카테고리별 조회		3,날짜 조회		4.참여일정 조회		5,일정수정			0,뒤로가기");
 		
 		try {
 			inputNum = Integer.parseInt(br.readLine());
 			
-			if(inputNum == 1) {
-//				전체일정조회 (조회 후 참여차 추가 여부)
+			if(inputNum == 1) { 		// 전체일정조회
+				sc.getSchedulerAll(user.getId());
 			} else if(inputNum == 2) {
-//				카테고리별 조회
-			} else if(inputNum == 3) {
-//				날짜 조회
-			} else if(inputNum == 4) {
-//				user 가 참여자인 일정 조회
+				input = br.readLine();
+				sc.getSchedulerCategory(input, user.getId());
+			} else if(inputNum == 3) {	// 날짜 조회
+				input = br.readLine();
+				sc.getSchedulerDate(input, id);
+			} else if(inputNum == 4) {	// user 가 참여자인 일정 조회
+				sc.getSchedulerParticipant(user.getId());
 			} else if(inputNum == 5) {
 				updateSchedule();
 			} else if(inputNum == 0) {
@@ -215,7 +219,7 @@ public class StartPage {
 	private void updateSchedule() {
 		int idx;
 		System.out.println("===================== 수정할 일정 을고르세요 =====================");
-//		sc.showScheduleAll();
+		sc.getSchedulerAll(user.getId());
 		try {
 			idx = Integer.parseInt(br.readLine());
 			
@@ -231,17 +235,17 @@ public class StartPage {
 				
 				if(inputNum == 1) {
 					
-					System.out.println("시작일정을 수정해주세요 ( YY / MM / DD )");
+					System.out.println("시작일정을 수정해주세요 ( YYYY / MM / DD )");
 					input = br.readLine();
 					
-					sc.updateScheduler(idx, input, null, null, null, null, user.getName());
+					sc.updateScheduler(idx, input, null, null, null, null, user.getId());
 					
 				} else if(inputNum == 2) {
 					
-					System.out.println("시작일정을 수정해주세요 ( YY / MM / DD )");
+					System.out.println("시작일정을 수정해주세요 ( YYYY / MM / DD )");
 					input = br.readLine();
 					
-					sc.updateScheduler(idx, null, input, null, null, null, user.getName());
+					sc.updateScheduler(idx, null, input, null, null, null, user.getId());
 					input = br.readLine();
 					
 				} else if(inputNum == 0) {
@@ -253,21 +257,21 @@ public class StartPage {
 				System.out.println("카체코리르 다시 지정해주세요");
 				input = br.readLine();
 				
-				sc.updateScheduler(idx, null, null, input, null, null, user.getName());
+				sc.updateScheduler(idx, null, null, input, null, null, user.getId());
 
 			} else if(inputNum == 3) {	// 제목 수정
 				
 				System.out.println("제목을 수정해주세요");
 				input = br.readLine();
 				
-				sc.updateScheduler(idx, null, null, null, input, null, user.getName());
+				sc.updateScheduler(idx, null, null, null, input, null, user.getId());
 
 			} else if(inputNum == 4) {	// 설명
 				
 				System.out.println("설명을 수정해주세요");
 				input = br.readLine();
 				
-				sc.updateScheduler(idx, null, null, null, null, input, user.getName());
+				sc.updateScheduler(idx, null, null, null, null, input, user.getId());
 				
 			} else if(inputNum == 5) {	// 설명
 				
@@ -292,6 +296,7 @@ public class StartPage {
 		
 	}
 	
+	// 참여자 수정
 	private void participantUpdate(int idx) {
 		
 		System.out.println("1,참여자 추가		2,참여자 삭제");
@@ -308,6 +313,7 @@ public class StartPage {
 		
 	}
 	
+	// 침야지 삭제
 	private void deleteParticipant(int idx) {
 		
 		System.out.println("참여자를 삭제하겠습니까? (y/n)");
@@ -333,7 +339,7 @@ public class StartPage {
 		
 	}
 		
-	// 참여자 추가 메소드
+	// 참여자 추가
 	private void addParticipant(int idx) {
 		
 		System.out.println("참여자를 추가하겠습니까? (y/n)");

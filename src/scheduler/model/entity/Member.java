@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -39,12 +40,12 @@ public class Member {
 	@Column(name="phone", length=11, nullable=false)
 	private String phone;
 	
-	@OneToMany(mappedBy="memberIdx")
+	@OneToMany(fetch=FetchType.EAGER, mappedBy="memberIdx")
 	private List<Participant> participants;
 
-	@Override
-	public String toString() {
-		return "Member [idx=" + idx + ", id=" + id + ", pw=" + pw + ", name=" + name + ", phone=" + phone + ", participants=" + participants + "]";
-	}
+//	@Override
+//	public String toString() {
+//		return "Member [idx=" + idx + ", id=" + id + ", pw=" + pw + ", name=" + name + ", phone=" + phone + ", participants=" + participants + "]";
+//	}
 	
 }

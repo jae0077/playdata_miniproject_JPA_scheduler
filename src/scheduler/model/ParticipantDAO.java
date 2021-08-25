@@ -1,11 +1,7 @@
 package scheduler.model;
 
-import java.text.ParseException;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-
-import org.junit.jupiter.api.Test;
 
 import scheduler.model.entity.Member;
 import scheduler.model.entity.Participant;
@@ -82,22 +78,5 @@ public class ParticipantDAO {
 		}
 		return result;
 	}
-	
-	@Test
-	public void m1() throws ParseException {
-				
-		EntityManager em = PublicCommon.getEntityManager();
-		
-		Member participant = null;
-		
-		Scheduler schedule = em.find(Scheduler.class, 2);
-		participant = em.find(Member.class, 2);
-		
-		System.out.println(schedule);
-		System.out.println(participant);
-		
-//		setParticipant(schedule, participant);
-//		deleteParticipant(schedule, participant);
-	}
-	
 }
+
