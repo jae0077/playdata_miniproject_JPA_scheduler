@@ -25,6 +25,7 @@ import lombok.Setter;
 @Entity(name="scheduler")
 @SequenceGenerator(name="scheduler_idx_seq", sequenceName="scheduler_idx_seq", initialValue=1, allocationSize=1)
 @NamedQuery(query="delete from scheduler s where s.idx=:idx and s.author=:author",name="Scheduler.deleteByschedule")
+@NamedQuery(query="select s from scheduler s where s.idx=:idx",name="Scheduler.searchByIdx")
 public class Scheduler {
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="scheduler_idx_seq")

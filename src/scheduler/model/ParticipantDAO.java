@@ -57,16 +57,21 @@ public class ParticipantDAO {
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
 		
+		Participant participant = null;
+		
 		boolean result = false;
 				
 		tx.begin();
 		
 		try {
+			participant = new Participant();
+			int flag = em.createNamedQuery("Participant.deleteParticipant").setParameter("sId", schedule).setParameter("mId", member).executeUpdate();
 			
-			em.createNamedQuery("Participant.deleteParticipant").setParameter("sId", schedule).setParameter("mId", member).executeUpdate();
 			tx.commit();
 			
-			result = true;
+			if(flag == 1) {
+				result = true;
+			}
 						
 		} catch (Exception e) {
 			tx.rollback();
