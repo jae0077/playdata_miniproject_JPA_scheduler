@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,6 +22,7 @@ import lombok.Setter;
 @Entity(name="member")
 @SequenceGenerator(name="member_idx_seq", sequenceName="member_idx_seq", initialValue=1, allocationSize=1)
 @NamedQuery(query="select m from member m where m.id=:id and m.pw=:pw",name="Member.findByLogin")
+@NamedQuery(query="select m from member m where m.id=:id",name="Member.findById")
 public class Member {
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="member_idx_seq")
@@ -38,12 +40,12 @@ public class Member {
 	@Column(name="phone", length=11, nullable=false)
 	private String phone;
 	
-	@OneToMany(mappedBy="memberIdx")
+	@OneToMany(fetch=FetchType.EAGER, mappedBy="memberIdx")
 	private List<Participant> participants;
 
-	@Override
-	public String toString() {
-		return "Member [idx=" + idx + ", id=" + id + ", pw=" + pw + ", name=" + name + ", phone=" + phone + ", participants=" + participants + "]";
-	}
+//	@Override
+//	public String toString() {
+//		return "Member [idx=" + idx + ", id=" + id + ", pw=" + pw + ", name=" + name + ", phone=" + phone + ", participants=" + participants + "]";
+//	}
 	
 }

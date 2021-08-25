@@ -5,9 +5,11 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 
@@ -21,6 +23,12 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
+@NamedQuery(query="select s from scheduler s where s.author=:author", name="Scheduler.findByAll")
+@NamedQuery(query="select s from scheduler s where s.category=:category and s.author=:author", name="Scheduler.findByCategory")
+@NamedQuery(query="select s from scheduler s where s.title=:title and s.author=:author", name="Scheduler.findByTitle")
+@NamedQuery(query="select s from scheduler s where s.startDate = :startDate and s.author=:author", name="Scheduler.findByDate")
+@NamedQuery(query="delete from scheduler s where s.idx=:idx and s.author=:author",name="Scheduler.deleteByschedule")
+@NamedQuery(query="select s from scheduler s where s.idx=:idx",name="Scheduler.searchByIdx")
 @Entity(name="scheduler")
 @SequenceGenerator(name="scheduler_idx_seq", sequenceName="scheduler_idx_seq", initialValue=1, allocationSize=1)
 public class Scheduler {
@@ -45,17 +53,14 @@ public class Scheduler {
 	
 	@Column(name="author", nullable=false)
 	private String author;
-	
+																
 	@Column(name="created_date", nullable=false)
 	private Date createdDate;
-	
-	@OneToMany(mappedBy="schedulerIdx")
-	private List<Participant> participants;
 
-	@Override
-	public String toString() {
-		return "Scheduler [idx=" + idx + ", startDate=" + startDate + ", endDate=" + endDate + ", category=" + category
-				+ ", title=" + title + ", info=" + info + ", author=" + author + ", createdDate=" + createdDate
-				+ ", participants=" + participants + "]";
+	@OneToMany(fetch=FetchType.EAGER,mappedBy="schedulerIdx")
+	private List<Participant> participants;
+	
+	public int getParticipantCount() {
+		return participants.size();
 	}
 }
