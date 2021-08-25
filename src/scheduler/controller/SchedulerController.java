@@ -62,9 +62,10 @@ public class SchedulerController {
 	}
 	
 	// 참여자 설정
-	public void setParticipant(Scheduler schedule, String id) {
+	public void setParticipant(int idx, String id) {
 		
 		Member member = memberDAO.searchById(id);
+		Scheduler schedule = schedulerDAO.searchByIdx(idx);
 		
 		if(participantDAO.setParticipant(schedule, member)) {
 			EndView.successView("참여자를 추가 성공");
@@ -74,25 +75,31 @@ public class SchedulerController {
 	}
 	
 	// 참여자 삭체
-	public void deleteParticipant(Scheduler schedule, String id) {
+	public void deleteParticipant(int idx, String id) {
 		
 		Member member = memberDAO.searchById(id);
+		Scheduler schedule = schedulerDAO.searchByIdx(idx);
 		
 		if(participantDAO.deleteParticipant(schedule, member)) {
-			EndView.successView("참여자를 추가 성공");
+			EndView.successView("참여자 삭제 성공");
 		} else {
-			EndView.failView("참여자 추가 실패 : 없는 멤버입니다");
+			EndView.failView("참여자 삭제 실패 : 참여자로 등록되지 않은 멤버입니다");
 		}
 	}
 	
 	// 스케줄 수정
 	public void updateScheduler(int idx, String startDate, String endDate, String category, String title, String info, String author) {
-		Date sDate;
-		Date eDate;
+		
+		Date sDate = null;
+		Date eDate = null;
 		
 		try {
-			sDate = new SimpleDateFormat("dd/MM/yyyy").parse(startDate);
-			eDate = new SimpleDateFormat("dd/MM/yyyy").parse(endDate);
+			if(startDate != null) {
+				sDate = new SimpleDateFormat("dd/MM/yyyy").parse(startDate);
+			}
+			if(endDate != null) {
+				eDate = new SimpleDateFormat("dd/MM/yyyy").parse(endDate);
+			}
 			
 			if(schedulerDAO.updateScheduler(idx, new SchedulerDTO(sDate, eDate, category, title, info, author))) {
 				EndView.successView("수정 완료");

@@ -138,10 +138,14 @@ public class SchedulerDAO {
 		
 		tx.begin();
 		try {
-			em.createNamedQuery("Scheduler.deleteByschedule").setParameter("idx", idx).setParameter("author", author).executeUpdate();
+			int flag = em.createNamedQuery("Scheduler.deleteByschedule").setParameter("idx", idx).setParameter("author", author).executeUpdate();
 			
 			tx.commit();
-			result = true;
+			
+			if(flag == 1) {
+				result = true;
+			}
+			
 		} catch (Exception e) {
 			tx.rollback();
 			e.printStackTrace();
@@ -168,5 +172,24 @@ public class SchedulerDAO {
 //		Date to = transFormat.parse(startDate);
 //		System.out.println(to);
 
-	}	
+	}
+	
+	// searchByIdx
+	public Scheduler searchByIdx(int idx) {
+		
+		EntityManager em = PublicCommon.getEntityManager();
+		Scheduler schedule = null;
+		
+		try {
+			schedule = (Scheduler) em.createNamedQuery("Scheduler.searchByIdx").setParameter("idx", idx).getSingleResult();
+			System.out.println(schedule);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			em.close();
+			em = null;
+		}
+		
+		return schedule;
+	}
 }
