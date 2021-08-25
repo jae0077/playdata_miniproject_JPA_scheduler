@@ -22,6 +22,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
+@NamedQuery(query="select s from scheduler s where s.author=:author", name="Scheduler.findByAll")
+@NamedQuery(query="select s from scheduler s where s.category=:category", name="Scheduler.findByCategory")
+@NamedQuery(query="select s from scheduler s where s.title=:title", name="Scheduler.findByTitle")
+@NamedQuery(query="select s from scheduler s where (s.startDate between to_date(:startDate) and to_date(:startDate) + 0.99999) and s.author:author", name="Scheduler.findByDate")
+@NamedQuery(query="select p from participant p where p.memberIdx = (select m.idx from member m where m.id=:id)", name="Scheduler.findByParticipant")
 @Entity(name="scheduler")
 @SequenceGenerator(name="scheduler_idx_seq", sequenceName="scheduler_idx_seq", initialValue=1, allocationSize=1)
 @NamedQuery(query="delete from scheduler s where s.idx=:idx and s.author=:author",name="Scheduler.deleteByschedule")
@@ -48,7 +53,7 @@ public class Scheduler {
 	
 	@Column(name="author", nullable=false)
 	private String author;
-	
+																
 	@Column(name="created_date", nullable=false)
 	private Date createdDate;
 	

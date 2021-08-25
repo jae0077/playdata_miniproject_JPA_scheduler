@@ -120,4 +120,59 @@ public class SchedulerController {
 			EndView.failView("수정 실패");
 		}
 	}
+  
+  // 모든 일정 조회 
+  public static void getSchedulerAll(String author) {
+			
+  try {
+    EndView.scheduleListAll(SchedulerDAO.getSchedulerAll(author));
+  } catch (Exception e) {
+    e.printStackTrace();
+    EndView.failView("에러 발생");
+  }
+}
+		
+	// 특정 일정 조회	
+		public void getSchedulerOne(String category, String author) {
+			
+			try {
+				EndView.scheduleListOne(SchedulerDAO.getSchedulerOne(category, author));
+			} catch (Exception e) {
+				e.printStackTrace();
+				EndView.failView("에러 발생");
+			}
+		}
+	
+	// 특정 날짜로 일정 조회
+		public void getSchedulerDate(String startDate, String author) {
+			
+			try {
+				EndView.scheduleListOne(SchedulerDAO.getSchedulerDate(startDate, author));
+			} catch (Exception e) {
+				e.printStackTrace();
+				EndView.failView("에러 발생");
+			}
+		}
+		
+	// 일정 제목으로 조회
+		public void getSchedulerTitle(String title, String author) {
+			
+			try {
+				EndView.scheduleListOne(SchedulerDAO.getSchedulerTitle(title, author));
+			} catch (Exception e) {
+				e.printStackTrace();
+				EndView.failView("에러 발생");
+			}
+		}
+	
+	// 특정 참여자로 일정 조회	
+		public void getSchedulerParticipant(String id, String author) {
+			
+			try {
+				EndView.scheduleListOne(SchedulerDAO.getSchedulerParticipant(id, author));
+			} catch (Exception e) {
+				e.printStackTrace();
+				EndView.failView("에러 발생");
+			}
+		}
 }
