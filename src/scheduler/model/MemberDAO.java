@@ -3,8 +3,7 @@ package scheduler.model;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
-import org.junit.jupiter.api.Test;
-
+import scheduler.model.dto.MemberDTO;
 import scheduler.model.entity.Member;
 import util.PublicCommon;
 
@@ -15,19 +14,20 @@ public class MemberDAO {
 		return instance;
 	}
 
-	public boolean memberRegister(String id, String pw, String name, String phone) {
+	// 회원가입
+	public boolean memberRegister(MemberDTO user) {
 		EntityManager em = PublicCommon.getEntityManager();	
-		
 		EntityTransaction tx = em.getTransaction();
 		
 		tx.begin();
 		boolean result = false;
+		
 		try {
 			Member member = new Member();
-			member.setId(id);
-			member.setPw(pw);
-			member.setName(name);
-			member.setPhone(phone);
+			member.setId(user.getId());
+			member.setPw(user.getPw());
+			member.setName(user.getName());
+			member.setPhone(user.getPhone());
 			
 			em.persist(member);
 			tx.commit();
@@ -42,34 +42,37 @@ public class MemberDAO {
 		return result;
 	} 
 	
-	public boolean login(String id, String pw) {
+	// 로그인
+	public Member login(String id, String pw) {
 		EntityManager em = PublicCommon.getEntityManager();	
+		Member member = null;
 		
-		boolean result = false;
 		try {
-			Member member = (Member)em.createNamedQuery("Member.findByLogin").setParameter("id", id).setParameter("pw", pw).getSingleResult();
-			System.out.println(member);
-			result = true;
+			member = (Member)em.createNamedQuery("Member.findByLogin").setParameter("id", id).setParameter("pw", pw).getSingleResult();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			em.close();
 			em = null;
 		}
-		
-		return result;
+		return member;
 	}
 	
-	@Test
-	// 단위테스트용
-	public void test() {
+	// 아이디 조회
+	public Member searchById(String id) {
+		EntityManager em = PublicCommon.getEntityManager();
 		
-		System.out.println("--- 단위테스트 start ---");
-//		boolean register = memberRegister("test", "testpw", "test", "01012345678");
-//		System.out.println(register);
-		boolean login = login("test", "testpw");
+		Member member = null;
 		
-		System.out.println(login);
-		System.out.println("--- 단위테스트 end ---");
+		try {
+			member = new Member();
+			member = (Member)em.createNamedQuery("Member.findById").setParameter("id", id).getSingleResult();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			em.close();
+			em = null;
+		}
+		return member;
 	}
 }

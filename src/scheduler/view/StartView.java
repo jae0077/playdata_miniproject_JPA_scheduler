@@ -1,14 +1,15 @@
 package scheduler.view;
 
-import scheduler.controller.SchedulerController;
+import lombok.extern.slf4j.Slf4j;
+import scheduler.model.StartPage;
 
+@Slf4j
 public class StartView {
 	public static void main (String[] args) {
 		
-		SchedulerController sc = SchedulerController.getInstance();
+		StartPage sp = StartPage.getInstance();
 		
-		// 회원가입
-//		sc.register();
+		sp.start();
 		
 	}
 }
