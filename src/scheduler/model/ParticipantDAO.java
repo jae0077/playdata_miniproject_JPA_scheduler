@@ -75,4 +75,3 @@ public class ParticipantDAO {
 		return result;
 	}
 }
-

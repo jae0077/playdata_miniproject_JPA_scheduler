@@ -201,13 +201,10 @@ public class SchedulerDAO {
 		List<Participant> p = null;
 		List<Scheduler> all = new ArrayList<>();
 		
-		all = new ArrayList<Scheduler> ();
-		
 		p = (List<Participant>)em.createNamedQuery("Participant.findByParticipant").setParameter("id", id).getResultList();
 		
-		
 		for(Participant pSchedule : p) {
-			all.add(em.find(Scheduler.class, pSchedule.getIdx()));
+			all.add(pSchedule.getSchedulerIdx());
 		}
 		
 		em.close();
