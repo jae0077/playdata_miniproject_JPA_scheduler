@@ -2,10 +2,6 @@
 
 일정을 등록하여 참여자와 공유 하는 일정 관리 프로그램
 
-코드 확인은 아래의 링크에서 가능합니다.
-
-[https://github.com/jae0077/playdata_miniproject_JPA_scheduler](https://github.com/jae0077/playdata_miniproject_JPA_scheduler)
-
 ## 기여자
 
 - [이상민](https://github.com/minstitia)
