@@ -53,7 +53,7 @@ public class SchedulerDAO {
 	}
 	
 	
-  // 아이디 찾기
+	// 아이디 찾기
 	public Scheduler searchByIdx(int idx) {
 		
 		EntityManager em = PublicCommon.getEntityManager();
