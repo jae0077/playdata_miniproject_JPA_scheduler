@@ -17,7 +17,6 @@ public class ParticipantDAO {
 	
 	// 참여자 추가
 	public boolean setParticipant(Scheduler schedule, Member member) {
-		
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
 		
@@ -48,19 +47,16 @@ public class ParticipantDAO {
 		return result;
 	}
 	
+	// 참여자 삭제
 	public boolean deleteParticipant(Scheduler schedule, Member member) {
-		
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
-		
-		Participant participant = null;
 		
 		boolean result = false;
 				
 		tx.begin();
 		
 		try {
-			participant = new Participant();
 			int flag = em.createNamedQuery("Participant.deleteParticipant").setParameter("sId", schedule).setParameter("mId", member).executeUpdate();
 			
 			tx.commit();

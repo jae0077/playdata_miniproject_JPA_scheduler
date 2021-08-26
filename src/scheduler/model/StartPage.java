@@ -96,10 +96,6 @@ public class StartPage {
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println(newId);
-		System.out.println(newPw);
-		System.out.println(newName);
-		System.out.println(newPhone);
 		
 		boolean register = sc.register(newId, newPw, newName, newPhone);
 		
@@ -149,11 +145,11 @@ public class StartPage {
 					schedulerSearchPage();
 				} else if(inputNum == 2) {
 					try {
-						System.out.print("일정 시작  ( YY / MM / DD ) : ");
+						System.out.print("일정 시작  ( YYYY / MM / DD ) : ");
 						String startDate = br.readLine();
-						System.out.print("일정 종료 ( YY / MM / DD ) : ");
+						System.out.print("일정 종료 ( YYYY / MM / DD ) : ");
 						String endDate = br.readLine();
-						System.out.print("일정 카태고리 : ");
+						System.out.print("일정 카테고리 : ");
 						String category = br.readLine();
 						System.out.print("제목 : ");
 						String title = br.readLine();
@@ -196,9 +192,11 @@ public class StartPage {
 			if(inputNum == 1) { 		// 전체일정조회
 				sc.getSchedulerAll(user.getId());
 			} else if(inputNum == 2) {
+				System.out.println("조회 할 카테고리를 입력해주세요");
 				input = br.readLine();
 				sc.getSchedulerCategory(input, user.getId());
 			} else if(inputNum == 3) {	// 날짜 조회
+				System.out.println("조회 할 일정 시작일을 입력해주세요( YYYY / MM / DD )");
 				input = br.readLine();
 				sc.getSchedulerDate(input, id);
 			} else if(inputNum == 4) {	// user 가 참여자인 일정 조회
@@ -218,8 +216,8 @@ public class StartPage {
 	// 일정 수정
 	private void updateSchedule() {
 		int idx;
-		System.out.println("===================== 수정할 일정 을고르세요 =====================");
 		sc.getSchedulerAll(user.getId());
+		System.out.println("===================== 수정할 일정의 idx를 입력하세요 =====================");
 		try {
 			idx = Integer.parseInt(br.readLine());
 			
@@ -254,7 +252,7 @@ public class StartPage {
 				
 			} else if(inputNum == 2) {	// 카테고리 수정
 				
-				System.out.println("카체코리르 다시 지정해주세요");
+				System.out.println("카테고리를 다시 지정해주세요");
 				input = br.readLine();
 				
 				sc.updateScheduler(idx, null, null, input, null, null, user.getId());
@@ -286,10 +284,8 @@ public class StartPage {
 			
 			
 		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

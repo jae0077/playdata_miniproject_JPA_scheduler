@@ -21,6 +21,7 @@ public class MemberDAO {
 		
 		tx.begin();
 		boolean result = false;
+		
 		try {
 			Member member = new Member();
 			member.setId(user.getId());
@@ -45,6 +46,7 @@ public class MemberDAO {
 	public Member login(String id, String pw) {
 		EntityManager em = PublicCommon.getEntityManager();	
 		Member member = null;
+		
 		try {
 			member = (Member)em.createNamedQuery("Member.findByLogin").setParameter("id", id).setParameter("pw", pw).getSingleResult();
 		} catch (Exception e) {
@@ -56,7 +58,6 @@ public class MemberDAO {
 		return member;
 	}
 	
-	
 	// 아이디 조회
 	public Member searchById(String id) {
 		EntityManager em = PublicCommon.getEntityManager();
@@ -66,7 +67,6 @@ public class MemberDAO {
 		try {
 			member = new Member();
 			member = (Member)em.createNamedQuery("Member.findById").setParameter("id", id).getSingleResult();
-			System.out.println(member);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

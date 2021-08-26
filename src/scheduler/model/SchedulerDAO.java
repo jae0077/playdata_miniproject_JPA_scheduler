@@ -1,16 +1,11 @@
 package scheduler.model;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-import javax.transaction.Transactional;
-
-import org.junit.jupiter.api.Test;
 
 import scheduler.model.dto.SchedulerDTO;
 import scheduler.model.entity.Participant;
@@ -24,7 +19,8 @@ public class SchedulerDAO {
 		return instance;
 	}
 	
-	public Scheduler setSchedule(Date startDate, Date endDate, String category, String title, String info, String author) {
+	// 스케줄 등록
+	public Scheduler setSchedule(SchedulerDTO schedulerDTO) {
 		
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
@@ -36,18 +32,16 @@ public class SchedulerDAO {
 		try {
 			schedule = new Scheduler();
 			
-			schedule.setStartDate(startDate);
-			schedule.setEndDate(endDate);
-			schedule.setCategory(category);
-			schedule.setTitle(title);
-			schedule.setInfo(info);
-			schedule.setAuthor(author);
+			schedule.setStartDate(schedulerDTO.getStartDate());
+			schedule.setEndDate(schedulerDTO.getEndDate());
+			schedule.setCategory(schedulerDTO.getCategory());
+			schedule.setTitle(schedulerDTO.getTitle());
+			schedule.setInfo(schedulerDTO.getInfo());
+			schedule.setAuthor(schedulerDTO.getAuthor());
 			schedule.setCreatedDate(new Date());
 			
 			em.persist(schedule);
-			System.out.println("persist");
 			tx.commit();
-			System.out.println("commit");
 		} catch (Exception e) {
 			tx.rollback();
 			e.printStackTrace();
@@ -58,54 +52,20 @@ public class SchedulerDAO {
 		return schedule;
 	}
 	
-	// endDate, 설정 안할 시 startDate와 같은 날짜 set
-	public Scheduler setSchedule(Date startDate, String category, String title, String info, String author) {
-		
-		EntityManager em = PublicCommon.getEntityManager();
-		EntityTransaction tx = em.getTransaction();
-		
-		Scheduler schedule = null;
-		
-		tx.begin();
-		
-		try {
-			schedule = new Scheduler();
-			
-			schedule.setStartDate(startDate);
-			schedule.setEndDate(startDate);
-			schedule.setCategory(category);
-			schedule.setTitle(title);
-			schedule.setInfo(info);
-			schedule.setAuthor(author);
-			schedule.setCreatedDate(new Date());
-			
-			tx.commit();
-						
-		} catch (Exception e) {
-			tx.rollback();
-			e.printStackTrace();
-		} finally {
-			em.close();
-			em = null;
-		}
-		return schedule;
-	}
 	
-  // searchByIdx
+  // 아이디 찾기
 	public Scheduler searchByIdx(int idx) {
 		
 		EntityManager em = PublicCommon.getEntityManager();
 		Scheduler schedule = null;
 		
 		schedule = (Scheduler) em.createNamedQuery("Scheduler.searchByIdx").setParameter("idx", idx).getSingleResult();
-		System.out.println(schedule);
 		
 		em.close();
 		em = null;
 		
 		return schedule;
 	}
-	
   
 	// 스케줄 수정
 	public Boolean updateScheduler(int idx, SchedulerDTO schedulerDTO) {
@@ -175,7 +135,7 @@ public class SchedulerDAO {
 		return result;
 	}
   
-	//본인의 일정만(로그인)전체조회 
+	// 본인의 일정만(로그인)전체조회 
 	public List<Scheduler> getSchedulerAll(String author) {
 		EntityManager em = PublicCommon.getEntityManager();
 		List<Scheduler> all = null;
@@ -187,12 +147,10 @@ public class SchedulerDAO {
 		em.close();
 		em = null;
 		
-		System.out.println(all);
-		
 		return all;
 	}
-		
-	//특정일정조회 - 카테고리로 조회
+
+	// 특정일정조회 - 카테고리로 조회
 	public List<Scheduler> getSchedulerCategory(String category, String author) {
 		EntityManager em = PublicCommon.getEntityManager();
 		List<Scheduler> all = null;
@@ -205,7 +163,7 @@ public class SchedulerDAO {
 		return all;
 	}
 	
-	//특정일정조회 - 날짜로 조회
+	// 특정일정조회 - 날짜로 조회
 	public List<Scheduler> getSchedulerDate(Date startDate, String author) {
 		
 		EntityManager em = PublicCommon.getEntityManager();
@@ -219,7 +177,7 @@ public class SchedulerDAO {
 		return all;
 	}
 	
-	//특정일정조회 - 일정 제목으로 조회
+	// 특정일정조회 - 일정 제목으로 조회
 	public List<Scheduler> getSchedulerTitle(String title, String author) {
 		
 		EntityManager em = PublicCommon.getEntityManager();
@@ -235,7 +193,7 @@ public class SchedulerDAO {
 		return all;
 	}
 	
-	//특정일정조회 - 참여자로 조회
+	// 특정일정조회 - 참여자로 조회
 	public List<Scheduler> getSchedulerParticipant(String id) {
 		
 		EntityManager em = PublicCommon.getEntityManager();

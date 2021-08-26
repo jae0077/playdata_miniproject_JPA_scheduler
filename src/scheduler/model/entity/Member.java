@@ -42,10 +42,4 @@ public class Member {
 	
 	@OneToMany(fetch=FetchType.EAGER, mappedBy="memberIdx")
 	private List<Participant> participants;
-
-//	@Override
-//	public String toString() {
-//		return "Member [idx=" + idx + ", id=" + id + ", pw=" + pw + ", name=" + name + ", phone=" + phone + ", participants=" + participants + "]";
-//	}
-	
 }

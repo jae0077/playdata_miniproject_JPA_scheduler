@@ -15,12 +15,8 @@ import scheduler.view.EndView;
 
 public class SchedulerController {
 	private static SchedulerController instance = new SchedulerController();
-
-	private SchedulerController() {
-	}
-
+	private SchedulerController() {	}
 	public static SchedulerController getInstance() {
-		System.out.println("----- SchedulerController ");
 		return instance;
 	}
 
@@ -30,7 +26,6 @@ public class SchedulerController {
 
 	// 회원가입
 	public boolean register(String id, String pw, String name, String phone) {
-
 		return memberDAO.memberRegister(new MemberDTO(id, pw, name, phone));
 	}
 
@@ -39,9 +34,8 @@ public class SchedulerController {
 		return memberDAO.login(id, pw);
 	}
 
-	// 스케줄 작성 (기간)
+	// 스케줄 등록
 	public Scheduler setSchedule(String startDate, String endDate, String category, String title, String info, String author) {
-
 		Scheduler schedule = null;
 
 		Date sDate;
@@ -50,7 +44,7 @@ public class SchedulerController {
 			sDate = new SimpleDateFormat("yyyy/MM/dd").parse(startDate);
 			eDate = new SimpleDateFormat("yyyy/MM/dd").parse(endDate);
 
-			schedule = schedulerDAO.setSchedule(sDate, eDate, category, title, info, author);
+			schedule = schedulerDAO.setSchedule(new SchedulerDTO(sDate, eDate, category, title, info, author));
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -64,7 +58,7 @@ public class SchedulerController {
 		Scheduler schedule = schedulerDAO.searchByIdx(idx);
 
 		if (participantDAO.setParticipant(schedule, member)) {
-			EndView.successView("참여자를 추가 성공");
+			EndView.successView("참여자 추가 성공");
 		} else {
 			EndView.failView("참여자 추가 실패 : 없는 멤버입니다");
 		}
@@ -112,9 +106,9 @@ public class SchedulerController {
 	// 스케줄 삭제
 	public void deleteScheduler(int idx, String author) {
 		if (schedulerDAO.deleteScheduler(idx, author)) {
-			EndView.successView("삭제 성공");
+			EndView.successView("삭제 완료");
 		} else {
-			EndView.failView("수정 실패");
+			EndView.failView("삭제 실패");
 		}
 	}
 
