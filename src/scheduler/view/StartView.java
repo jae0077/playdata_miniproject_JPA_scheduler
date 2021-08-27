@@ -6,7 +6,6 @@ import scheduler.model.StartPage;
 @Slf4j
 public class StartView {
 	public static void main (String[] args) {
-		
 		StartPage sp = StartPage.getInstance();
 		
 		sp.start();

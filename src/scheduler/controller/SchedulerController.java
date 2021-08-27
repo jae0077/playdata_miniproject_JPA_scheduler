@@ -31,7 +31,14 @@ public class SchedulerController {
 
 	// 로그인
 	public Member login(String id, String pw) {
-		return memberDAO.login(id, pw);
+		Member user = memberDAO.login(id, pw);
+		
+		if (user != null) {
+			EndView.successView("로그인 성공");
+		} else {
+			EndView.failView("참여자 추가 실패 : 없는 멤버입니다");
+		}
+		return user;
 	}
 
 	// 스케줄 등록

@@ -52,9 +52,11 @@ public class StartPage {
 					br.close();
 					br = null;
 					trigger = false;
-				}
+				} 
 			}
 		} catch (NumberFormatException | IOException e) {
+			System.out.println("지정된 숫자를 입력해주세요");
+			start();
 			e.printStackTrace();
 		} finally {
 			try {
@@ -126,8 +128,13 @@ public class StartPage {
 		}
 		
 		user = sc.login(id, pw);
-		loggedIn = true;
-		loggedInPage();
+		
+		if(user != null) {
+			loggedIn = true;
+			loggedInPage();
+		} else {
+			logInPage();
+		}
 	}
 	
 	
@@ -190,7 +197,10 @@ public class StartPage {
 			inputNum = Integer.parseInt(br.readLine());
 			
 			if(inputNum == 1) { 		// 전체일정조회
+				System.out.println("--------- 등록 일정 --------");
 				sc.getSchedulerAll(user.getId());
+				System.out.println("--------- 참여 일정 --------");
+				sc.getSchedulerParticipant(user.getId());
 			} else if(inputNum == 2) {
 				System.out.println("조회 할 카테고리를 입력해주세요");
 				input = br.readLine();
@@ -205,6 +215,9 @@ public class StartPage {
 				updateSchedule();
 			} else if(inputNum == 0) {
 				loggedInPage();
+			} else {
+				System.out.println("지정된 숫자를 입력해주세요");
+				schedulerSearchPage();
 			}
 			
 		} catch (NumberFormatException | IOException e) {
@@ -280,16 +293,12 @@ public class StartPage {
 				
 			} else if(inputNum == 0) {	// 뒤로가기
 				loggedInPage();
-			}
-			
-			
-		} catch (NumberFormatException e) {
+			} 
+		} catch (NumberFormatException | IOException e) {
+			System.out.println("지정된 숫자를 입력해주세요");
+			updateSchedule();
 			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		
+		} 
 	}
 	
 	// 참여자 수정
@@ -302,11 +311,13 @@ public class StartPage {
 				addParticipant(idx);
 			} else if(inputNum == 2) {
 				deleteParticipant(idx);
+			} else {
+				System.out.println("지정된 숫자를 입력해주세요");
+				participantUpdate(idx);
 			}
 		} catch (NumberFormatException | IOException e) {
 			e.printStackTrace();
 		}
-		
 	}
 	
 	// 침야지 삭제
